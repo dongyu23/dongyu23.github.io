@@ -352,3 +352,8 @@
   background-color: #3eb8be;
   border-radius: 8px;
 }
+
+/* 链接样式 */
+#article-container a {
+  color: var(--theme-color);
+}
