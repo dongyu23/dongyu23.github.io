@@ -8,7 +8,7 @@
       <link href="/2023/03/02/matlab%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
       <url>/2023/03/02/matlab%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
       
-        <content type="html"><![CDATA[<h1 id="二维图"><a href="#二维图" class="headerlink" title="二维图"></a>二维图</h1><ol><li><code>x = 0:0.05:30;</code>从0到30，每隔0.05取一次值。</li><li><code>y = sin(x);</code></li><li><code>plot(x,y,&#39;LineWidth&#39;,2)</code>以x,y为条件绘制线图，linewidth可变粗。</li><li><code>grid on</code> 显示网格</li><li><code>axis(0 20 -1.5 1.5)</code> 横坐标显示0-20，纵坐标显示-1.5-1.5。</li><li><code>plot(x,y1,x,y2)</code>多组函数显示在一张图内。</li><li><code>bar(t,p)</code>创建垂直条形图</li><li><code>barh(t,p)</code>创建水平条形图</li><li><code>abs()</code>求绝对值或复数的模</li><li><code>polarplot(t,p)</code>绘制极坐标图</li><li><code>scatter(x,y)</code>绘制x,y的散点图</li><li><code>xlabel(&#39;abc&#39;)ylabel(&#39;abc&#39;)</code>横纵坐标的标题</li><li><code>randn(1000,1)</code>生成一个1000行1列的随机矩阵(符合正态分布)</li><li><code>exp(x)</code>输出e的x次方的结果</li></ol><hr><h1 id="三维图-和子图"><a href="#三维图-和子图" class="headerlink" title="三维图 和子图"></a>三维图 和子图</h1><ol><li><code>[X,Y] = meshgrid(-2:0.2:2)</code> -2到2的范围内没0.2取一次值，xy的范围均如此</li><li><code>Z=X.*exp(xxxxxxx)</code> xy和z的关系式</li><li><code>surf(X,Y,Z)</code> 生成函数的三维曲面图</li><li><code>colormap hsv/winter/summer</code>等 切换颜色布局</li><li><code>colorbar</code> 出现数值对应颜色的对比表</li><li><code>subplot(2,2,1)</code>在两行两列的图中放置第一个子图;<code>surf(X.^2);title(&#39;1st&#39;);</code></li></ol><hr><h1 id="线性规划"><a href="#线性规划" class="headerlink" title="线性规划"></a>线性规划</h1><p>Linprog函数；目标函数最小值，约束条件小于等于或等号。<br>若求最大值，则求目标函数负数的最小值，约束条件大于等于，则大于等于加一个负号<br><code>[x,fval]=linporg(f,A,Aeq,beq,lb,ub)</code><br><code>x</code>为最优解变量的取值，<code>fval</code>返回目标函数的最优值<br><code>A</code>,<code>b</code>为不等式约束条件的变量系数矩阵和常数项矩阵<br><code>Aeq</code>，<code>beq</code>为等式约束条件中的系数矩阵和常数项矩阵<br><code>lb</code>,<code>bu</code>为决策变量的最小取值和最大取值  </p><p>若不存在不等式约束，则用[]代替A和b：<code>[x,fval]=linprog(f,[],[],Aeq,beq,lb,ub) </code><br>若不存在等式约束，用[]代替Aeq和beq：<code>linprog(f,A,b, [],[],lb,ub)</code><br>没有等式约束和最小，最大取值的约束时，可以不写Aeq和beq和lb,ub:<code>[x,fval]=linprog(f,A,b)</code><br>若题目求最大值：目标函数等号两端加负号转为最小值<br><img src="https://images.weserv.nl/?url=https://article.biliimg.com/bfs/article/20e82b0230edfc2287729e632c3b57005492186f.png" alt="111">  </p><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f=[<span class="number">-40</span>;<span class="number">30</span>]; <span class="comment">%目标函数中变量的系数矩阵</span></span><br><span class="line">a=[<span class="number">1</span>,<span class="number">1</span>;<span class="number">-1</span>,<span class="number">0</span>;<span class="number">0</span>,<span class="number">-1</span>;<span class="number">240</span>,<span class="number">120</span>];<span class="comment">%系数矩阵</span></span><br><span class="line">b=[<span class="number">6</span>;<span class="number">-1</span>;<span class="number">-1</span>;<span class="number">1200</span>]; <span class="comment">%常数项矩阵</span></span><br><span class="line">[x,y] = limprog(f,a,b)</span><br><span class="line">y= -y <span class="comment">%变求最小值为求最大值。</span></span><br></pre></td></tr></table></figure><hr><h1 id="非线性规划"><a href="#非线性规划" class="headerlink" title="非线性规划"></a>非线性规划</h1><ul><li>与线性规划的区别：线性规划所有变量都是一次方，而非线性规划所有变量都不是一次方。</li></ul><p>[x,fval] &#x3D; fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon)<br>fun为单独函数文件里定义的目标函数<br>x0为决策变量的初始值，不知道的话随便写一个就行<br>A,b是线性约束的不等式变量系数矩阵和常数项矩阵，都是(小于等于)<br>Aeq,beq是线性约束的等式变量<br>lb,ub为决策变量的最小取值和最大取值<br>nonlcon为非线性约束，包括不等式和等式<br>x为决策变量取值，fval为得到的最优解取值</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="二维图"><a href="#二维图" class="headerlink" title="二维图"></a>二维图</h1><ol><li><code>x = 0:0.05:30;</code>从0到30，每隔0.05取一次值。</li><li><code>y = sin(x);</code></li><li><code>plot(x,y,&#39;LineWidth&#39;,2)</code>以x,y为条件绘制线图，linewidth可变粗。</li><li><code>grid on</code> 显示网格</li><li><code>axis(0 20 -1.5 1.5)</code> 横坐标显示0-20，纵坐标显示-1.5-1.5。</li><li><code>plot(x,y1,x,y2)</code>多组函数显示在一张图内。</li><li><code>bar(t,p)</code>创建垂直条形图</li><li><code>barh(t,p)</code>创建水平条形图</li><li><code>abs()</code>求绝对值或复数的模</li><li><code>polarplot(t,p)</code>绘制极坐标图</li><li><code>scatter(x,y)</code>绘制x,y的散点图</li><li><code>xlabel(&#39;abc&#39;)ylabel(&#39;abc&#39;)</code>横纵坐标的标题</li><li><code>randn(1000,1)</code>生成一个1000行1列的随机矩阵(符合正态分布)</li><li><code>exp(x)</code>输出e的x次方的结果</li></ol><hr><h1 id="三维图-和子图"><a href="#三维图-和子图" class="headerlink" title="三维图 和子图"></a>三维图 和子图</h1><ol><li><code>[X,Y] = meshgrid(-2:0.2:2)</code> -2到2的范围内没0.2取一次值，xy的范围均如此</li><li><code>Z=X.*exp(xxxxxxx)</code> xy和z的关系式</li><li><code>surf(X,Y,Z)</code> 生成函数的三维曲面图</li><li><code>colormap hsv/winter/summer</code>等 切换颜色布局</li><li><code>colorbar</code> 出现数值对应颜色的对比表</li><li><code>subplot(2,2,1)</code>在两行两列的图中放置第一个子图;<code>surf(X.^2);title(&#39;1st&#39;);</code></li></ol><hr><h1 id="线性规划"><a href="#线性规划" class="headerlink" title="线性规划"></a>线性规划</h1><p>Linprog函数；目标函数最小值，约束条件小于等于或等号。<br>若求最大值，则求目标函数负数的最小值，约束条件大于等于，则大于等于加一个负号<br><code>[x,fval]=linporg(f,A,Aeq,beq,lb,ub)</code><br><code>x</code>为最优解变量的取值，<code>fval</code>返回目标函数的最优值<br><code>A</code>,<code>b</code>为不等式约束条件的变量系数矩阵和常数项矩阵<br><code>Aeq</code>，<code>beq</code>为等式约束条件中的系数矩阵和常数项矩阵<br><code>lb</code>,<code>bu</code>为决策变量的最小取值和最大取值  </p><p>若不存在不等式约束，则用[]代替A和b：<code>[x,fval]=linprog(f,[],[],Aeq,beq,lb,ub) </code><br>若不存在等式约束，用[]代替Aeq和beq：<code>linprog(f,A,b, [],[],lb,ub)</code><br>没有等式约束和最小，最大取值的约束时，可以不写Aeq和beq和lb,ub:<code>[x,fval]=linprog(f,A,b)</code><br>若题目求最大值：目标函数等号两端加负号转为最小值<br><img src="https://images.weserv.nl/?url=https://article.biliimg.com/bfs/article/20e82b0230edfc2287729e632c3b57005492186f.png" alt="111">  </p><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f=[<span class="number">-40</span>;<span class="number">30</span>]; <span class="comment">%目标函数中变量的系数矩阵</span></span><br><span class="line">a=[<span class="number">1</span>,<span class="number">1</span>;<span class="number">-1</span>,<span class="number">0</span>;<span class="number">0</span>,<span class="number">-1</span>;<span class="number">240</span>,<span class="number">120</span>];<span class="comment">%系数矩阵</span></span><br><span class="line">b=[<span class="number">6</span>;<span class="number">-1</span>;<span class="number">-1</span>;<span class="number">1200</span>]; <span class="comment">%常数项矩阵</span></span><br><span class="line">[x,y] = limprog(f,a,b)</span><br><span class="line">y= -y <span class="comment">%变求最小值为求最大值。</span></span><br></pre></td></tr></table></figure><hr><h1 id="非线性规划"><a href="#非线性规划" class="headerlink" title="非线性规划"></a>非线性规划</h1><ul><li>与线性规划的区别：线性规划所有变量都是一次方，而非线性规划所有变量都不是一次方。</li></ul><p><code>[x,fval] = fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon)  </code><br><code>fun</code>为单独函数文件里定义的目标函数<br><code>x0</code>为决策变量的初始值，不知道的话随便写一个就行<br><code>A</code>,<code>b</code>是线性约束的不等式变量系数矩阵和常数项矩阵，都是(小于等于)<br><code>Aeq</code>,<code>beq</code>是线性约束的等式变量<br><code>lb</code>,<code>ub</code>为决策变量的最小取值和最大取值<br><code>nonlcon</code>为非线性约束，包括不等式和等式<br><code>x</code>为决策变量取值，<code>fval</code>为得到的最优解取值</p>]]></content>
       
       
       <categories>
@@ -20,7 +20,11 @@
       
         <tags>
             
-            <tag> 算法 建模 Matlab </tag>
+            <tag> 算法 </tag>
+            
+            <tag> 建模 </tag>
+            
+            <tag> Matlab </tag>
             
         </tags>
       
@@ -45,7 +49,9 @@
       
         <tags>
             
-            <tag> 算法 分享 </tag>
+            <tag> 算法 </tag>
+            
+            <tag> 分享 </tag>
             
         </tags>
       
@@ -95,7 +101,9 @@
       
         <tags>
             
-            <tag> 软件 分享 </tag>
+            <tag> 软件 </tag>
+            
+            <tag> 分享 </tag>
             
         </tags>
       
@@ -107,9 +115,42 @@
     
     
     <entry>
+      <title></title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
+      
+        <content type="html"><![CDATA[<hr><h2 id="title-关于date-2023-1-9-13-54-00"><a href="#title-关于date-2023-1-9-13-54-00" class="headerlink" title="title:关于date :2023-1-9 13:54:00"></a>title:关于<br>date :2023-1-9 13:54:00</h2>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文章分类</title>
       <link href="/categories/index.html"/>
       <url>/categories/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>tags</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>link</title>
+      <link href="/link/index.html"/>
+      <url>/link/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
       
@@ -145,39 +186,6 @@
       <url>/js/universe.js</url>
       
         <content type="html"><![CDATA[function dark() {window.requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;var n,e,i,h,t=.05,s=document.getElementById("universe"),o=!0,a="180,184,240",r="226,225,142",d="226,225,224",c=[];function f(){n=window.innerWidth,e=window.innerHeight,i=.216*n,s.setAttribute("width",n),s.setAttribute("height",e)}function u(){h.clearRect(0,0,n,e);for(var t=c.length,i=0;i<t;i++){var s=c[i];s.move(),s.fadeIn(),s.fadeOut(),s.draw()}}function y(){this.reset=function(){this.giant=m(3),this.comet=!this.giant&&!o&&m(10),this.x=l(0,n-10),this.y=l(0,e),this.r=l(1.1,2.6),this.dx=l(t,6*t)+(this.comet+1-1)*t*l(50,120)+2*t,this.dy=-l(t,6*t)-(this.comet+1-1)*t*l(50,120),this.fadingOut=null,this.fadingIn=!0,this.opacity=0,this.opacityTresh=l(.2,1-.4*(this.comet+1-1)),this.do=l(5e-4,.002)+.001*(this.comet+1-1)},this.fadeIn=function(){this.fadingIn&&(this.fadingIn=!(this.opacity>this.opacityTresh),this.opacity+=this.do)},this.fadeOut=function(){this.fadingOut&&(this.fadingOut=!(this.opacity<0),this.opacity-=this.do/2,(this.x>n||this.y<0)&&(this.fadingOut=!1,this.reset()))},this.draw=function(){if(h.beginPath(),this.giant)h.fillStyle="rgba("+a+","+this.opacity+")",h.arc(this.x,this.y,2,0,2*Math.PI,!1);else if(this.comet){h.fillStyle="rgba("+d+","+this.opacity+")",h.arc(this.x,this.y,1.5,0,2*Math.PI,!1);for(var t=0;t<30;t++)h.fillStyle="rgba("+d+","+(this.opacity-this.opacity/20*t)+")",h.rect(this.x-this.dx/4*t,this.y-this.dy/4*t-2,2,2),h.fill()}else h.fillStyle="rgba("+r+","+this.opacity+")",h.rect(this.x,this.y,this.r,this.r);h.closePath(),h.fill()},this.move=function(){this.x+=this.dx,this.y+=this.dy,!1===this.fadingOut&&this.reset(),(this.x>n-n/4||this.y<0)&&(this.fadingOut=!0)},setTimeout(function(){o=!1},50)}function m(t){return Math.floor(1e3*Math.random())+1<10*t}function l(t,i){return Math.random()*(i-t)+t}f(),window.addEventListener("resize",f,!1),function(){h=s.getContext("2d");for(var t=0;t<i;t++)c[t]=new y,c[t].reset();u()}(),function t(){document.getElementsByTagName('html')[0].getAttribute('data-theme')=='dark'&&u(),window.requestAnimationFrame(t)}()};dark()]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title></title>
-      <link href="/about/index.html"/>
-      <url>/about/index.html</url>
-      
-        <content type="html"><![CDATA[<hr><h2 id="title-关于date-2023-1-9-13-54-00"><a href="#title-关于date-2023-1-9-13-54-00" class="headerlink" title="title:关于date :2023-1-9 13:54:00"></a>title:关于<br>date :2023-1-9 13:54:00</h2>]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>link</title>
-      <link href="/link/index.html"/>
-      <url>/link/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>tags</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
       
     </entry>
     
